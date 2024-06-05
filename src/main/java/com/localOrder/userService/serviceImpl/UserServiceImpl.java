@@ -27,8 +27,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Autowired
-	private StorageServiceImpl storageService;
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -61,8 +59,6 @@ public class UserServiceImpl implements UserService {
 	public UserDTO getUser(int userId) {
 		Optional<User> user = userRepository.findById(userId);
 		UserDTO userDTO = new UserDTO();
-		String imageUrl = storageService.imageLink("profilePic"+userId);
-		userDTO.setProfileImage(imageUrl);
 		userDTO.setUserEmail(user.get().getUserEmail());
 		userDTO.setUserName(user.get().getName());
 		userDTO.setPhone(user.get().getPhone());
@@ -74,10 +70,8 @@ public class UserServiceImpl implements UserService {
 		
 		
 		UserJwtTokenDTO tokenDTO = new UserJwtTokenDTO();
-		System.out.println("authentication started");
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userAuthDTO.getEmail(),userAuthDTO.getPassword()));
 		if(authentication.isAuthenticated()) {
-			System.out.println("authentication sucessfull");
 			User user = userRepository.findByUserEmail(userAuthDTO.getEmail());
 			if(user!=null) {
 				String token = jwtService.GenerateToken(user.getUserEmail());

@@ -25,7 +25,7 @@ import com.localOrder.userService.dto.UserAuthDTO;
 import com.localOrder.userService.dto.UserDTO;
 import com.localOrder.userService.dto.UserJwtTokenDTO;
 import com.localOrder.userService.service.UserService;
-import com.localOrder.userService.serviceImpl.StorageServiceImpl;
+
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.NotAuthorizedException;
@@ -41,8 +41,7 @@ public class UserController {
 	private JwtService jwtService;
 	
 	
-	@Autowired
-	private StorageServiceImpl storageService;
+	
 	
 	@PostMapping("/login")
 	public ResponseEntity<UserJwtTokenDTO> loginUser(@RequestBody UserAuthDTO userDTO) {
@@ -63,20 +62,20 @@ public class UserController {
 		return new ResponseEntity<>(userDTO,HttpStatus.OK);
 	}
 	
-	@PostMapping(path="/uploadPic/{userId}")
-	public ResponseEntity<String> uploadProfile(HttpServletRequest request,@PathVariable("userName")int userId,@RequestParam("profileImage") MultipartFile file) throws FileNotFoundException, IOException{
-		String imageURL = storageService.uploadProfileImage(userId,file);
-		return new ResponseEntity<>(imageURL,HttpStatus.OK);
-	}
-	
-	@GetMapping("/validate/{token}")
-	public ResponseEntity<Boolean> validateToken(@PathVariable("token") String token){
-		try {
-			jwtService.validateToken(token);
-			return new ResponseEntity<>(true,HttpStatus.OK);
-		}catch(Exception e) {
-			throw new NotAuthorizedException("Invalid request");
-		}
-	}
+	/*
+	 * @PostMapping(path="/uploadPic/{userId}") public ResponseEntity<String>
+	 * uploadProfile(HttpServletRequest request,@PathVariable("userName")int
+	 * userId,@RequestParam("profileImage") MultipartFile file) throws
+	 * FileNotFoundException, IOException{ String imageURL =
+	 * storageService.uploadProfileImage(userId,file); return new
+	 * ResponseEntity<>(imageURL,HttpStatus.OK); }
+	 */
+	/*
+	 * @GetMapping("/validate/{token}") public ResponseEntity<Boolean>
+	 * validateToken(@PathVariable("token") String token){ try {
+	 * jwtService.validateToken(token); return new
+	 * ResponseEntity<>(true,HttpStatus.OK); }catch(Exception e) { throw new
+	 * NotAuthorizedException("Invalid request"); } }
+	 */
 
 }
