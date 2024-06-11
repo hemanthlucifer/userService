@@ -10,10 +10,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User implements UserDetails {
 	
 	/**
@@ -39,7 +43,7 @@ public class User implements UserDetails {
 	private String role;
 	
 	@Column(unique=true)
-	private long phone;
+	private Long phone;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

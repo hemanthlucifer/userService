@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,6 +61,12 @@ public class UserController {
 	public ResponseEntity<UserDTO> getUserByUserId(@PathVariable("userName") int userId){
 		UserDTO userDTO = userService.getUser(userId);
 		return new ResponseEntity<>(userDTO,HttpStatus.OK);
+	}
+	
+	@PatchMapping("/updateUser")
+	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO){
+		UserDTO updatedUser = userService.updateUser(userDTO);
+		return new ResponseEntity<>(updatedUser,HttpStatus.OK);
 	}
 	
 	/*

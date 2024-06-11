@@ -14,9 +14,12 @@ import com.localOrder.userService.dto.CreateUserDTO;
 import com.localOrder.userService.dto.UserAuthDTO;
 import com.localOrder.userService.dto.UserDTO;
 import com.localOrder.userService.dto.UserJwtTokenDTO;
+import com.localOrder.userService.exception.UserUpdateException;
 import com.localOrder.userService.model.User;
 import com.localOrder.userService.repository.UserRepository;
 import com.localOrder.userService.service.UserService;
+import com.localOrder.userService.util.ErrorMessages;
+import com.localOrder.userService.util.UserPatch;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,6 +36,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private JwtService jwtService;
+	
+	@Autowired
+	private UserPatch userPatch;
 
 	@Override
 	public UserDTO createUser(CreateUserDTO userDTO) {
@@ -51,8 +57,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO updateUser(UserDTO userDTO) {
-		// TODO Auto-generated method stub
-		return null;
+		User existingUser = userRepository.findByUserEmail(userDTO.getUserEmail());
+		try {
+			userPatch.buildPatchObject(userDTO, existingUser);
+		} catch(Exception e) {
+			throw new  UserUpdateException(ErrorMessages.USERUPDATEERROR);
+		}
+		
+		return userDTO;
 	}
 
 	@Override
